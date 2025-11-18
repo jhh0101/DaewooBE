@@ -13,10 +13,6 @@ spring:
     username: hotels_user
     password: hotels12345
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-
 file:
   upload:
     hotel:
@@ -38,4 +34,4 @@ logging:
             bind: TRACE
 
 cors:
-  allowed-origins: http://localhost:3000,http://localhost:18080,https://mjc813b.softagape.com/
+  allowed-origins: http://localhost:3000,http://localhost:80,http://mjc813b.softagape.com/,https://mjc813b.softagape.com/

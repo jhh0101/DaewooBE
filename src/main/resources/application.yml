@@ -1,4 +1,15 @@
 spring:
+  sql:
+    init:
+      mode: always  # ✅ 공통으로 적용 (AWS에서도 실행됨)
+      encoding: UTF-8
+    servlet:
+      multipart:
+        max-file-size: 10MB
+        max-request-size: 10MB
+    jpa:
+      hibernate:
+        ddl-auto: none # ✅ schema.sql을 믿고 JPA 자동 생성은 끔 (중요)
   security:
     oauth2:
       client:

@@ -1,12 +1,12 @@
 version: '3.8'
 services:
-#  front-app:
-#    image: ppyuing/front_image
-#    container_name: front_container
-#    ports:
-#      - 18080:80
-#      - 10443:443
-#    platform: linux/amd64
+  front-app:
+    image: ppyuing/front_image
+    container_name: front_container
+    ports:
+      - 80:80
+      - 443:443
+    platform: linux/amd64
   redis:
     image: 'redis:latest'
     container_name: 'redis'
@@ -34,13 +34,13 @@ services:
   #    restart: always
 
   boot-app:
-    image: seojw173/back_image:1.0.3
+    image: jhh0101/back_image:1.0.4
     build:
       context: ./
       dockerfile: dockerfile
     container_name: boot_container
     ports:
-      - 18888:8085
+      - 8085:8085
     volumes:
       - ./uploads:/app/uploads  # 업로드 파일 영구 저장
     environment:
