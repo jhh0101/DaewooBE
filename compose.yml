@@ -36,7 +36,7 @@ services:
   #    restart: always
 
   boot-app:
-    image: jhh0101/back_image:1.0.15
+    image: jhh0101/back_image:1.0.17
     build:
       context: ./
       dockerfile: Dockerfile
@@ -55,9 +55,6 @@ services:
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
       - TZ=Asia/Seoul
-      - FILE_UPLOAD_HOTEL_PATH=/app/uploads/hotelimage/
-      - FILE_UPLOAD_USER_PATH=/app/uploads/userimage/
-      - FILE_UPLOAD_PARLOR_PATH=/app/uploads/parlorimage/
     depends_on:
       - redis
       - mariadb_container

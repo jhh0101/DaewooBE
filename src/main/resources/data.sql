@@ -23,7 +23,7 @@ INSERT INTO `user_tbl` VALUES
                            (9,'한아름','areum@test.com','$2a$10$wT5k.4T/v3z4t.b9u4W3g.1V9Y/n2H6W0J5g2XlM.0I1E5j6Y5I5E','010-5050-6060','울산 남구','1992-04-18','user',NULL,NULL,NULL),
                            (10,'신동호','dongho@test.com','$2a$10$xU6l.6U/w4z4t.b9u4W3g.1V9Y/n2H6W0J5g2XlM.0I1E5j6Y5I5E','010-7070-8080','세종시 새롬동','1987-06-22','user',NULL,NULL,NULL),
                            (11,'홍길동','gildong@test.com','$2a$10$yV7m.8V/x5z4t.b9u4W3g.1V9Y/n2H6W0J5g2XlM.0I1E5j6Y5I5E','010-9090-0000','강릉시 주문진읍','1996-02-08','user',NULL,NULL,NULL),
-                           (12,'123','123@123','$2a$10$iCS1OYLHGul1iMA23u8SB.9WIzEbdZLkIXssDF4l0hxPjdpoCVQ9C','010-1111-1111','123','2000-01-01','ROLE_USER','/user-images/12_1761645317967.jpg',NULL,NULL);
+                           (12,'123','123@123','$2a$10$iCS1OYLHGul1iMA23u8SB.9WIzEbdZLkIXssDF4l0hxPjdpoCVQ9C','010-1111-1111','123','2000-01-01','ROLE_USER',NULL,NULL,NULL);
 
 -- 5. Card Data
 INSERT INTO `card` VALUES
