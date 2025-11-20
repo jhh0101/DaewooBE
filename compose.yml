@@ -1,12 +1,14 @@
 version: '3.8'
 services:
   front-app:
-    image: ppyuing/front_image
+    image: angson116/front_image:1.0.3
     container_name: front_container
     ports:
       - 80:80
       - 443:443
     platform: linux/amd64
+    networks:
+      - a_network
   redis:
     image: 'redis:latest'
     container_name: 'redis'
@@ -24,7 +26,7 @@ services:
     volumes:
       - ../dockerdb/mariadb_data:/var/lib/mysql
     environment:
-      - TZ= Asia/Seoul
+      - TZ=Asia/Seoul
       - MARIADB_ROOT_PASSWORD=1234
       - MARIADB_DATABASE=hotels_db
       - MARIADB_USER=hotels_user
@@ -34,15 +36,17 @@ services:
   #    restart: always
 
   boot-app:
-    image: jhh0101/back_image:1.0.4
+    image: jhh0101/back_image:1.0.15
     build:
       context: ./
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     container_name: boot_container
     ports:
       - 8085:8085
     volumes:
-      - ./uploads:/app/uploads  # 업로드 파일 영구 저장
+      - ./uploads/hotelimage:/app/uploads/hotelimage
+      - ./uploads/userimage:/app/uploads/userimage
+      - ./uploads/parlorimage:/app/uploads/parlorimage
     environment:
       - SPRING_PROFILES_ACTIVE=local
       - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb_container:3306/hotels_db
@@ -51,10 +55,12 @@ services:
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
       - TZ=Asia/Seoul
+      - FILE_UPLOAD_HOTEL_PATH=/app/uploads/hotelimage/
+      - FILE_UPLOAD_USER_PATH=/app/uploads/userimage/
+      - FILE_UPLOAD_PARLOR_PATH=/app/uploads/parlorimage/
     depends_on:
       - redis
       - mariadb_container
-
     networks:
       - a_network
 #    restart: always

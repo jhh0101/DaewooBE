@@ -55,7 +55,42 @@ INSERT INTO `accommodation_amenity` VALUES (2,1),(5,1),(10,2),(4,3),(7,4),(10,5)
 
 -- 8. Com Image Data
 INSERT INTO `com_image` VALUES
-                            (1,'/images/hotel_2_main.jpg',0x01,2),(2,'/images/hotel_3_main.jpg',0x01,3),(3,'/images/residence_4_sub.jpg',0x00,4),(4,'/images/guesthouse_5_main.jpg',0x01,5),(5,'/images/villa_6_main.jpg',0x01,6),(6,'/images/resort_7_sub.jpg',0x00,7),(7,'/images/camping_8_main.jpg',0x01,8),(8,'/images/hotel_9_main.jpg',0x01,9),(9,'/images/minbak_10_main.jpg',0x01,10),(10,'/images/hotel_11_main.jpg',0x01,11),(12,'/images/hotel_2_sub1.jpg',0x00,2),(13,'/images/hotel_2_sub2.jpg',0x00,2),(14,'/images/hotel_2_sub3.jpg',0x00,2),(15,'/images/hotel_2_sub4.jpg',0x00,2);
+                            (1,'hotel2_main.jpg',0x01,2),
+                            (16,'hotel2_sub1.jpg',0x00,2),
+                            (17,'hotel2_sub2.jpg',0x00,2),
+                            (18,'hotel2_sub3.jpg',0x00,2),
+                            (19,'hotel2_sub4.jpg',0x00,2),
+                            (20,'hotel3_main.jpg',0x01,3),
+                            (21,'hotel3_sub1.jpg',0x00,3),
+                            (22,'hotel3_sub2.jpg',0x00,3),
+                            (23,'hotel3_sub3.jpg',0x00,3),
+                            (24,'hotel3_sub4.jpg',0x00,3),
+                            (25,'hotel3_sub5.jpg',0x00,3),
+                            (26,'hotel4_main.jpg',0x01,4),
+                            (27,'hotel4_sub1.jpg',0x00,4),
+                            (28,'hotel4_sub2.jpg',0x00,4),
+                            (29,'hotel4_sub3.jpg',0x00,4),
+                            (30,'hotel4_sub4.jpg',0x00,4),
+                            (31,'hotel4_sub5.jpg',0x00,4),
+                            (32,'hotel4_sub6.jpg',0x00,4),
+                            (33,'hotel4_sub8.jpg',0x00,4),
+                            (34,'hotel5_main.jpg',0x01,5),
+                            (35,'hotel5_sub1.jpg',0x00,5),
+                            (36,'hotel5_sub2.jpg',0x00,5),
+                            (37,'hotel5_sub3.jpg',0x00,5),
+                            (38,'hotel5_sub4.jpg',0x00,5),
+                            (39,'hotel2_sub5.jpg',0x00,2),
+                            (40,'hotel2_sub6.jpg',0x00,2),
+                            (41,'hotel2_sub7.jpg',0x00,2),
+                            (42,'hotel3_sub6.jpg',0x00,3),
+                            (43,'hotel3_sub7.jpg',0x00,3),
+                            (44,'hotel4_sub7.jpg',0x00,4),
+                            (45,'hotel2_sub8.jpg',0x00,2),
+                            (46,'hotel3_sub8.jpg',0x00,3),
+                            (47,'hotel5_sub5.jpg',0x00,5),
+                            (48,'hotel5_sub6.jpg',0x00,5),
+                            (49,'hotel5_sub7.jpg',0x00,5),
+                            (50,'hotel5_sub8.jpg',0x00,5);
 
 -- 9. Acc Room Type Data
 INSERT INTO `acc_room_type` VALUES

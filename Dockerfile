@@ -1,0 +1,17 @@
+FROM eclipse-temurin:21-jdk
+
+#RUN groupadd ubuntu && useradd -m -g ubuntu ubuntu
+USER ubuntu
+
+WORKDIR /home/ubuntu
+
+COPY build/libs/Daewoo.jar Daewoo.jar
+
+COPY ./uploads/ ./uploads/
+#COPY ./uploads/hotelimage /app/uploads/hotelimage
+#COPY ./uploads/parlorimage /app/uploads/parlorimage
+#COPY ./uploads/userimage /app/uploads/userimage
+
+ENV SPRING_PROFILES_ACTIVE=prod
+
+ENTRYPOINT ["java", "-jar", "Daewoo.jar", "--spring.profiles.active=prod"]
