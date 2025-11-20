@@ -18,14 +18,14 @@ spring:
 file:
   upload:
     hotel:
-      path: classpath:static/hotelimage/    # 기존 static 폴더에서 읽기만
+      path: ./uploads/hotelimage/
       resourceHandler: /hotel-images/**
     user:
       path: ./uploads/userimage/            # 업로드 및 읽기
       resourceHandler: /user-images/**
       webPath: /user-images/
     parlor:
-      path: classpath:static/parlorimage/    # 기존 static 폴더에서 읽기만
+      path: ./uploads/parlorimage/
       resourceHandler: /parlor-images/**
 # 프로젝트 기본 경로 설정 (필요한 경우)
 project:
@@ -40,7 +40,7 @@ logging:
         orm:
           jdbc:
             bind: TRACE
-cors:
 
-  allowed-origins: http://localhost:8080, http://localhost:8085, http://tomhoon.my:780
+cors:
+  allowed-origins: http://localhost:443,http://localhost:80,http://mjc813b.softagape.com/,https://mjc813b.softagape.com/, http://localhost
 

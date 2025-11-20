@@ -1,15 +1,12 @@
 package com.example.daewoo.accommodation.image.apicontroller;
 
 import com.example.daewoo.accommodation.image.dto.ComImageDetailDto;
-import com.example.daewoo.accommodation.image.dto.ComImageDto;
-import com.example.daewoo.accommodation.image.service.ComImageRepository;
 import com.example.daewoo.accommodation.image.service.ComImageService;
 import com.example.daewoo.common.CommonRestController;
 import com.example.daewoo.common.ResponseCode;
 import com.example.daewoo.common.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 
 @Slf4j

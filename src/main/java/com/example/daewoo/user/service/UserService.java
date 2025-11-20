@@ -6,6 +6,8 @@ import com.example.daewoo.user.dto.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -303,5 +308,26 @@ public class UserService {
 
         log.info("Image uploaded successfully: {}", webPath);
         return webPath;
+    }
+
+    public Resource loadImage(String filename) {
+        try {
+            Path filePath = Paths.get(userImagePath).resolve(filename).normalize();
+            log.info("filePath : {}", filePath.toString());
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("파일을 찾을 수 없거나 읽을 수 없습니다: " + filename);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("이미지 로드 중 오류가 발생했습니다: " + filename, e);
+        }
+    }
+
+    public String getMimeType(Resource resource) throws IOException {
+        String contentType = Files.probeContentType(resource.getFile().toPath());
+        return contentType != null ? contentType : "application/octet-stream";
     }
 }
