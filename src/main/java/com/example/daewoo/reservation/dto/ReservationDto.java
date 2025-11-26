@@ -1,9 +1,6 @@
 package com.example.daewoo.reservation.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
@@ -13,19 +10,22 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ReservationDto {
     private Long reservationId;
     private String roomNumber;
-    private Long accId;
+    private String  comTitle;
+    private Long  accId;
     private Long userId;
     private LocalDate checkIn;
     private LocalDate checkOut;
     private LocalTime checkInTime;
     private LocalTime checkOutTime;
 
-    public ReservationDto(Long reservationId, String roomNumber, Long accId, Long userId, LocalTime checkInTime, LocalTime checkOutTime, LocalDate checkIn, LocalDate checkOut) {
+    public ReservationDto(Long reservationId, String roomNumber, String comTitle, Long accId, Long userId, LocalTime checkInTime, LocalTime checkOutTime, LocalDate checkIn, LocalDate checkOut) {
         this.reservationId = reservationId;
         this.roomNumber = roomNumber;
+        this.comTitle = comTitle;
         this.accId = accId;
         this.userId = userId;
         this.checkInTime = checkInTime;
@@ -48,6 +48,7 @@ public class ReservationDto {
         dto.setCheckIn(entity.getCheckIn());
         dto.setCheckOut(entity.getCheckOut());
         dto.setRoomNumber(entity.getParlorEntity().getParContent());
+        dto.setComTitle(entity.getParlorEntity().getAccRoomTypeEntity().getAccommodation().getComTitle());
         dto.setAccId(entity.getParlorEntity().getAccRoomTypeEntity().getAccId());
         dto.setUserId(entity.getUserEntity().getUserId());
         dto.setCheckInTime(entity.getParlorEntity().getAccRoomTypeEntity().getAccommodation().getCheckInTime());

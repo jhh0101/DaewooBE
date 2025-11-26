@@ -1,5 +1,6 @@
 package com.example.daewoo.reservation.service;
 
+import com.example.daewoo.common.toss.dto.TossPaymentDto;
 import com.example.daewoo.parlor.dto.ParlorEntity;
 import com.example.daewoo.parlor.service.ParlorRepository;
 import com.example.daewoo.reservation.dto.ReservationDto;
@@ -9,8 +10,11 @@ import com.example.daewoo.user.service.UserRepository;
 import com.example.daewoo.wish.dto.WishDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ReservationService {
@@ -23,10 +27,11 @@ public class ReservationService {
     @Autowired
     private UserRepository userRepository;
 
-    public void insert(Long userId, ReservationDto dto){
+    public void insert(Long userId, TossPaymentDto dto){
+
         ReservationEntity entity = dto.toEntity();
 
-        ParlorEntity parlorEntity = resolveParlorForReservation(dto);
+        ParlorEntity parlorEntity = resolveParlorForReservation(dto.getAccId(), dto.getCheckIn(), dto.getCheckOut());
         entity.setParlorEntity(parlorEntity);
 
         UserEntity userEntity = userRepository.findById(userId)
@@ -55,10 +60,10 @@ public class ReservationService {
     }
 
 
-    public void update(Long userId, ReservationDto dto){
+    public void update(Long userId, TossPaymentDto dto){
         ReservationEntity entity = dto.toEntity();
 
-        ParlorEntity parlorEntity = resolveParlorForReservation(dto);
+        ParlorEntity parlorEntity = resolveParlorForReservation(dto.getAccId(), dto.getCheckIn(), dto.getCheckOut());
         entity.setParlorEntity(parlorEntity);
 
         UserEntity userEntity = userRepository.findById(userId)
@@ -67,36 +72,37 @@ public class ReservationService {
 
         this.reservationRepository.save(entity);
     }
-    private ParlorEntity resolveParlorForReservation(ReservationDto dto) {
-        if (dto.getAccId() == null) {
-            throw new IllegalArgumentException("accId is required for auto assignment");
+    private ParlorEntity resolveParlorForReservation(Long accId, LocalDate checkIn, LocalDate checkOut) {
+
+        // 1. 필수값 체크
+        if (accId == null || checkIn == null || checkOut == null) {
+            throw new IllegalArgumentException("필수 정보 누락");
         }
 
-        if (dto.getCheckIn() == null || dto.getCheckOut() == null) {
-            throw new IllegalArgumentException("checkIn과 checkOut은 필수입니다.");
-        }
-
-        List<ParlorEntity> parlors = parlorRepository.findByAccRoomTypeEntityAccId(dto.getAccId());
+        // 2. 방 목록 조회
+        List<ParlorEntity> parlors = parlorRepository.findByAccRoomTypeEntityAccId(accId);
         if (parlors.isEmpty()) {
             throw new IllegalStateException("예약 가능한 객실이 없습니다.");
         }
 
+        // 3. 빈 방 찾기 (로직은 그대로)
         for (ParlorEntity candidate : parlors) {
             boolean overlapping = reservationRepository
                     .existsByParlorEntityParIdAndCheckOutGreaterThanEqualAndCheckInLessThanEqual(
-                            candidate.getParId(), dto.getCheckIn(), dto.getCheckOut());
-            if (overlapping) {
-                continue;
-            }
+                            candidate.getParId(), checkIn, checkOut); // dto.get... 대신 변수 사용
+            if (overlapping) continue;
 
-            dto.setRoomNumber(candidate.getParContent());
-            return candidate;
+            return candidate; // 찾은 방(Entity) 바로 리턴
         }
 
-        throw new IllegalStateException("요청 조건에 맞는 배정 가능한 객실이 없습니다.");
+        throw new IllegalStateException("남은 방이 없습니다.");
     }
 
     public void delete(Long id){
         this.reservationRepository.deleteById(id);
+    }
+
+    public Integer findPriceByAccId(Long accId) {
+        return reservationRepository.findPriceByAccId(accId);
     }
 }
