@@ -107,10 +107,10 @@ public class TossPaymentsController {
             }
 
             // 금액 비교 (소수점 오차를 고려하여 1원 이내 차이는 허용)
-            if (Math.abs(price - requestAmount) > 1) {
-                log.warn("금액 불일치 - 계산된 금액: {}, 요청 금액: {}", price, requestAmount);
-                return ResponseEntity.badRequest().body("금액이 일치하지 않습니다. 계산된 금액: " + price + "원, 요청 금액: " + requestAmount + "원");
-            }
+//            if (Math.abs(price - requestAmount) > 1) {
+//                log.warn("금액 불일치 - 계산된 금액: {}, 요청 금액: {}", price, requestAmount);
+//                return ResponseEntity.badRequest().body("금액이 일치하지 않습니다. 계산된 금액: " + price + "원, 요청 금액: " + requestAmount + "원");
+//            }
             // TODO: 성공 시, DB에 주문 정보 저장 등의 로직을 여기에 추가하세요.
             Long userId = userService.findByEmail(authentication.getName()).getUserId();
             tossPaymentDto.setUserId(userId);
