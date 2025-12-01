@@ -60,33 +60,46 @@ public class TossPaymentsController {
             log.info("기본 가격 조회 - accId: {}, basePrice: {}원, 할인율: {}%", 
                 tossPaymentDto.getAccId(), basePrice, discountRate);
             
-            // 1. 기본 가격 (1박당)
-            double basePricePerNight = basePrice.doubleValue();
-            log.info("1. 기본 가격 (1박당): {}원", basePricePerNight);
+            // 1. 총 기본 요금 계산 (1박당 가격 * 숙박 일수)
+            BigDecimal totalBasePrice = new BigDecimal(basePrice.toString())
+                .multiply(BigDecimal.valueOf(days));
+            log.info("1. 총 기본 요금 ({}박): {}원", days, totalBasePrice);
             
-            // 2. 세금 계산 (원금의 10%)
-            double tax = basePricePerNight * 0.1;
-            log.info("2. 세금 (10%): {}원", tax);
-            
-            // 3. 할인 금액 계산 (원금의 할인율%)
-            double discountAmount = 0;
-            if (discountRate != null && discountRate.doubleValue() > 0) {
-                discountAmount = basePricePerNight * (discountRate.doubleValue() / 100);
-                log.info("3. 할인 적용 ({}%): -{}원", discountRate, discountAmount);
+            // 2. 할인 금액 계산 (총 기본 요금 * (할인율/100))
+            BigDecimal discountAmount = BigDecimal.ZERO;
+            if (discountRate != null && discountRate.compareTo(BigDecimal.ZERO) > 0) {
+                // 정확한 할인 금액 계산 (소수점 버림)
+                discountAmount = totalBasePrice
+                    .multiply(discountRate)
+                    .divide(new BigDecimal("100.0"))
+                    .setScale(0, java.math.RoundingMode.DOWN);
+                log.info("2. 할인 적용 ({}%): -{}원", discountRate, discountAmount);
             } else {
-                log.info("3. 할인 미적용");
+                log.info("2. 할인 미적용");
             }
             
-            // 4. 1박당 최종 가격 (원금 + 세금 - 할인)
-            double finalPricePerNight = basePricePerNight + tax - discountAmount;
-            log.info("4. 1박당 최종 가격: {}원 (원금: {}, 세금: {}, 할인: -{})", 
-                    finalPricePerNight, basePricePerNight, tax, discountAmount);
+            // 3. 할인 적용 후 금액
+            BigDecimal priceAfterDiscount = totalBasePrice.subtract(discountAmount);
+            log.info("3. 할인 적용 후 금액: {}원", priceAfterDiscount);
             
-            // 5. 숙박 일수 적용 및 수수료 5,000원 추가
-            double calculatedPrice = (finalPricePerNight * days) + 5000;
-            log.info("4. 최종 계산 ({}박, 수수료 포함): {}원 (반올림 전)", days, calculatedPrice);
-            // 소수점 이하 반올림
-            long price = Math.round(calculatedPrice);
+            // 4. 세금 계산 (원금의 10%)
+            BigDecimal taxAmount = totalBasePrice
+                .multiply(new BigDecimal("0.1"))
+                .setScale(0, java.math.RoundingMode.DOWN);
+            log.info("4. 세금 (원금의 10%): +{}원", taxAmount);
+            
+            // 5. 서비스 요금 (고정 5,000원)
+            BigDecimal serviceFee = new BigDecimal("5000");
+            log.info("5. 서비스 요금: +{}원", serviceFee);
+            
+            // 6. 최종 가격 계산 (할인 적용 금액 + 세금 + 서비스 요금)
+            BigDecimal finalPrice = priceAfterDiscount
+                .add(taxAmount)
+                .add(serviceFee);
+            log.info("6. 최종 결제 금액: {}원", finalPrice);
+            
+            // 7. 소수점 이하 버림 처리 (내림)
+            long price = finalPrice.setScale(0, java.math.RoundingMode.DOWN).longValue();
             Double requestAmount = tossPaymentDto.getAmount();
 
             if (tossPaymentDto.getCheckIn() == null || tossPaymentDto.getCheckOut() == null) {
