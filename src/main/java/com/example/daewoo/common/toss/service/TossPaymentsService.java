@@ -17,7 +17,7 @@ import java.util.Collections;
 @Service
 public class TossPaymentsService {
 
-    @Value("${toss.secret-key}")
+    @Value("${toss.payment.secretKey}")
     private String secretKey;
 
     private final RestTemplate restTemplate;

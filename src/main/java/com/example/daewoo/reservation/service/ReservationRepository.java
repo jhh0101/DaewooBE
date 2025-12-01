@@ -32,7 +32,4 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
 //    boolean existsByParlorEntityParIdAndCheckInEqualsAndCheckOutEquals(Long parId, LocalDate checkIn, LocalDate checkOut);
 
     boolean existsByParlorEntityParIdAndCheckOutGreaterThanEqualAndCheckInLessThanEqual(Long parId, LocalDate checkIn, LocalDate checkOut);
-
-    @Query("SELECT r.parlorEntity.accRoomTypeEntity.price FROM ReservationEntity r WHERE r.parlorEntity.accRoomTypeEntity.accId = :accId")
-    Integer findPriceByAccId(@Param("accId") Long accId);
 }

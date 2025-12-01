@@ -89,5 +89,6 @@ cors:
   allowed-origins: http://localhost:3000,http://tomhoon.my:780,http://localhost:3000,http://localhost:18080,http://localhost:8080,http://localhost:8085
 
 toss:
-  client-key: test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm
-  secret-key: test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6 # 테스트 시크릿 키
+  payment:
+    clientKey: test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm
+    secretKey: test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6

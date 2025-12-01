@@ -2,6 +2,7 @@ package com.example.daewoo.reservation.service;
 
 import com.example.daewoo.common.toss.dto.TossPaymentDto;
 import com.example.daewoo.parlor.dto.ParlorEntity;
+import com.example.daewoo.parlor.service.AccRoomTypeRepository;
 import com.example.daewoo.parlor.service.ParlorRepository;
 import com.example.daewoo.reservation.dto.ReservationDto;
 import com.example.daewoo.reservation.dto.ReservationEntity;
@@ -26,6 +27,9 @@ public class ReservationService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AccRoomTypeRepository accRoomTypeRepository;
 
     public void insert(Long userId, TossPaymentDto dto){
 
@@ -103,6 +107,6 @@ public class ReservationService {
     }
 
     public Integer findPriceByAccId(Long accId) {
-        return reservationRepository.findPriceByAccId(accId);
+        return accRoomTypeRepository.findPriceByAccId(accId);
     }
 }
