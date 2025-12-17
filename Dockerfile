@@ -10,7 +10,9 @@ COPY ./uploads/ ./uploads/
 #COPY ./uploads/parlorimage /app/uploads/parlorimage
 #COPY ./uploads/userimage /app/uploads/userimage
 
-RUN chown -R ubuntu:ubuntu ./uploads/userimage
+# 디렉토리가 없을 수 있으므로 먼저 생성 후 권한 변경
+RUN mkdir -p ./uploads/userimage ./uploads/hotelimage ./uploads/parlorimage && \
+    chown -R ubuntu:ubuntu ./uploads
 
 #RUN groupadd ubuntu && useradd -m -g ubuntu ubuntu
 USER ubuntu

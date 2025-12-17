@@ -15,6 +15,7 @@ import java.math.RoundingMode;
 @AllArgsConstructor
 public class PaymentAccommodationDto {
     private Long comId;
+    private Long accId;  // 프론트엔드 호환용 (comId와 동일)
     private String comTitle;
     private String comAddress;
     private Integer price;
@@ -39,6 +40,7 @@ public class PaymentAccommodationDto {
     public static PaymentAccommodationDto fromEntity(AccommodationEntity entity, Integer price, String mainImage){
         PaymentAccommodationDto dto = new PaymentAccommodationDto();
         dto.setComId(entity.getComId());
+        dto.setAccId(entity.getComId());  // accId = comId (프론트엔드 호환)
         dto.setComTitle(entity.getComTitle());
         dto.setComAddress(entity.getComAddress());
         dto.setReviewAvg(entity.getReviewAvg());

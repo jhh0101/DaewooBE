@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Setter
 public class TossPaymentDto {
     private String orderId;
-    private Double amount;
+    private Long amount;
     private String paymentKey;
     private String customerKey;
 

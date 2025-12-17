@@ -26,7 +26,7 @@ public class ReservationEntity {
     private String orderId;     // 주문번호 (우리가 만든 것, UUID)
     private String paymentKey;  // 결제키 (토스가 준 것, 환불용)
     // --- [2] 금액 기록용 (역사 기록) ---
-    private Double amount;        // 실제 결제된 금액 (가격 변동 대비)
+    private Long amount;        // 실제 결제된 금액 (가격 변동 대비)
 
     @ManyToOne
     @JoinColumn(name = "par_id")
