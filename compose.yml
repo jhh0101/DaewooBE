@@ -1,6 +1,6 @@
 services:
   front-app:
-    image: jhh0101/front_image:1.0.22
+    image: jhh0101/front_image:1.0.30
     container_name: front_container
     ports:
       - 80:80
@@ -35,7 +35,7 @@ services:
   #    restart: always
 
   boot-app:
-    image: jhh0101/back_image:1.0.24
+    image: jhh0101/back_image:1.0.25
     build:
       context: ./
       dockerfile: Dockerfile
