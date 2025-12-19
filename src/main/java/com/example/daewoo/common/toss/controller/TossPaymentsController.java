@@ -126,9 +126,18 @@ public class TossPaymentsController {
 
     @PostMapping("/toss/confirm")
     public ResponseEntity<?> confirmPayment(@RequestBody TossPaymentDto tossPaymentDto,
-                                            Authentication authentication) {
+                                            Authentication authentication,
+                                            @RequestHeader(value = "Authorization", required = false) String authHeader) {
         try {
             log.info("결제 요청 데이터: {}", tossPaymentDto);
+            log.info("Authorization 헤더: {}", authHeader);
+            log.info("Authentication 객체: {}", authentication);
+
+            // 인증 확인
+            if (authentication == null) {
+                log.error("Authentication is null. Authorization header: {}", authHeader);
+                return ResponseEntity.status(401).body("로그인이 필요합니다. (인증 정보 없음)");
+            }
 
             // 가격 계산
             PriceCalculationResponse priceInfo = calculatePriceInternal(
