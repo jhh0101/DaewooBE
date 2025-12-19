@@ -77,10 +77,12 @@ public class TossPaymentsController {
             throw new IllegalArgumentException("가격 정보를 찾을 수 없습니다.");
         }
 
-        // 할인율 조회 (null이면 0으로 처리)
-        BigDecimal discountRate = accommodationRepository.findById(accId)
-                .map(AccommodationEntity::getDiscountRate)
-                .orElse(BigDecimal.ZERO);
+        // AccRoomType에서 Accommodation을 찾아서 할인율 조회
+        AccommodationEntity accommodation = reservationService.findAccommodationByAccId(accId);
+        BigDecimal discountRate = BigDecimal.ZERO;
+        if (accommodation != null && accommodation.getDiscountRate() != null) {
+            discountRate = accommodation.getDiscountRate();
+        }
 
         // BigDecimal로 정확한 계산
         BigDecimal basePrice = new BigDecimal(basePriceInt.toString());
@@ -88,7 +90,7 @@ public class TossPaymentsController {
 
         // 할인 금액 계산
         BigDecimal discountAmount = BigDecimal.ZERO;
-        if (discountRate != null && discountRate.compareTo(BigDecimal.ZERO) > 0) {
+        if (discountRate.compareTo(BigDecimal.ZERO) > 0) {
             discountAmount = totalBasePrice
                     .multiply(discountRate)
                     .divide(new BigDecimal("100"), 0, RoundingMode.DOWN);

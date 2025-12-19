@@ -37,10 +37,10 @@ public class PaymentAccommodationDto {
         return entity;
     }
 
-    public static PaymentAccommodationDto fromEntity(AccommodationEntity entity, Integer price, String mainImage){
+    public static PaymentAccommodationDto fromEntity(AccommodationEntity entity, Integer price, String mainImage, Long accId){
         PaymentAccommodationDto dto = new PaymentAccommodationDto();
         dto.setComId(entity.getComId());
-        dto.setAccId(entity.getComId());  // accId = comId (프론트엔드 호환)
+        dto.setAccId(accId);  // 실제 AccRoomType의 accId 사용
         dto.setComTitle(entity.getComTitle());
         dto.setComAddress(entity.getComAddress());
         dto.setReviewAvg(entity.getReviewAvg());

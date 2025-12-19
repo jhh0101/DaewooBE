@@ -56,7 +56,7 @@ spring:
   application:
     name: backend
   profiles:
-    active: local
+    active: prod
 
   mail:
     host: smtp.gmail.com
@@ -90,5 +90,5 @@ cors:
 
 toss:
   payment:
-    clientKey: test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm
-    secretKey: test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6
+    clientKey: test_ck_nRQoOaPz8LKqNbMDOdazry47BMw6
+    secretKey: test_sk_GjLJoQ1aVZy9eoAXOX2W3w6KYe2R

@@ -67,8 +67,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                                // 인증이 필요한 API 경로
+                // 인증이 필요한 API 경로
                                 .requestMatchers("/api/user/profile").authenticated()
+                                .requestMatchers("/api/payment/toss/confirm").authenticated()
                                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/accommodation/*/review/**").permitAll()
                                 // 리뷰 작성/수정(POST, PATCH)은 인증된 사용자만
                                 .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/accommodation/*/review/**").authenticated()

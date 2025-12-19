@@ -42,5 +42,5 @@ logging:
             bind: TRACE
 
 cors:
-  allowed-origins: http://localhost:443,http://localhost:80,http://mjc813b.softagape.com/,https://mjc813b.softagape.com/, http://localhost
+  allowed-origins: http://localhost:443,http://localhost:80,http://mjc813b.softagape.com/,https://mjc813b.softagape.com/, http://localhost:8080
 

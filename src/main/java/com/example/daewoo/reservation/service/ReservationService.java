@@ -109,4 +109,13 @@ public class ReservationService {
     public Integer findPriceByAccId(Long accId) {
         return accRoomTypeRepository.findPriceByAccId(accId);
     }
+
+    /**
+     * AccRoomType ID로 해당 숙소(Accommodation) 엔티티 조회
+     */
+    public com.example.daewoo.accommodation.dto.AccommodationEntity findAccommodationByAccId(Long accId) {
+        return accRoomTypeRepository.findById(accId)
+                .map(accRoomType -> accRoomType.getAccommodation())
+                .orElse(null);
+    }
 }

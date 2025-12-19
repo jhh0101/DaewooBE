@@ -1,7 +1,6 @@
-version: '3.8'
 services:
   front-app:
-    image: jhh0101/front_image:1.0.15
+    image: jhh0101/front_image:1.0.21
     container_name: front_container
     ports:
       - 80:80
@@ -36,7 +35,7 @@ services:
   #    restart: always
 
   boot-app:
-    image: jhh0101/back_image:1.0.21
+    image: jhh0101/back_image:1.0.22
     build:
       context: ./
       dockerfile: Dockerfile
@@ -44,9 +43,7 @@ services:
     ports:
       - 8085:8085
     volumes:
-      - ./uploads/hotelimage:/app/uploads/hotelimage
-      - ./uploads/userimage:/app/uploads/userimage
-      - ./uploads/parlorimage:/app/uploads/parlorimage
+      - ./uploads:/app/uploads
     environment:
       - SPRING_PROFILES_ACTIVE=local
       - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb_container:3306/hotels_db
