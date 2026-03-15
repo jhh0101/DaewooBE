@@ -15,15 +15,15 @@ spring:
       client:
         registration:
           google:
-            client-id: 1077915335069-r98l6388roc14c9oaikfls8ar82h2236.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ${OAUTH_GOOGLE_CLIENT_ID}
+            client-secret: ${OAUTH_GOOGLE_CLIENT_SECRET}
             redirect-uri: http://localhost:18888/login/oauth2/code/google
             scope:
               - profile
               - email
           naver:
-            client-id: 88c3d7IZipMVA1H7hPev
-            client-secret: VEGh3elA2H
+            client-id: ${OAUTH_NAVER_CLIENT_ID}
+            client-secret: ${OAUTH_NAVER_CLIENT_SECRET}
             redirect-uri: http://localhost:18888/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
@@ -33,8 +33,8 @@ spring:
               - email
               - profile_image
           kakao:
-            client-id: 183f1ee52307a03178a604de54e8993f
-            client-secret: sV0aBfkyo8sh2j87SzpKtOYrv3FSgsuc
+            client-id: ${OAUTH_KAKAO_CLIENT_ID}
+            client-secret: ${OAUTH_KAKAO_CLIENT_SECRET}
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:18888/login/oauth2/code/kakao
@@ -61,8 +61,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: sjso11426682@gmail.com
-    password: iqtnbzbtplxrbmsi
+    username: ${USER_MAIL}
+    password: ${USER_PASSWORD}
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -83,12 +83,12 @@ mybatis:
 
 
 jwt:
-  secret: c2VjcmV0S2V5Zm9ySldUVG9rZW5zZWNyZXRrZXlmb3Jqd3R0b2tlbnNlY3JldGtleWZvcmp3dHRva2Vu
+  secret: ${JWT_SECRET_KEY}
 
 cors:
   allowed-origins: http://localhost:3000,http://tomhoon.my:780,http://localhost:3000,http://localhost:18080,http://localhost:8080,http://localhost:8085
 
 toss:
   payment:
-    clientKey: test_ck_nRQoOaPz8LKqNbMDOdazry47BMw6
-    secretKey: test_sk_GjLJoQ1aVZy9eoAXOX2W3w6KYe2R
+    clientKey: ${TOSS_PAYMENT_CLIENT_KEY}
+    secretKey: ${TOSS_PAYMENT_SECRET_KEY}
