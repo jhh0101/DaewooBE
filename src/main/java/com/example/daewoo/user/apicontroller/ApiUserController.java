@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -238,7 +240,7 @@ public class ApiUserController extends CommonRestController {
     }
 
     // 프로필 이미지 업로드
-    @PostMapping("/profile-image")
+    @PostMapping(value = "/profile-image", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDto> updateUserProfileImage (
             @RequestParam("image") MultipartFile imageFile,
             Authentication authentication){
@@ -249,6 +251,32 @@ public class ApiUserController extends CommonRestController {
         } catch (Throwable e) {
             log.error(e.toString());
             return getResponseEntity(ResponseCode.UPDATE_FAIL, "Image Upload Error", null, e);
+        }
+    }
+
+    @GetMapping("/user-images/{filename:.+}")
+    public ResponseEntity<Resource> loadImageOld(@PathVariable String filename) {
+        return loadImage(filename);
+    }
+
+    @GetMapping("/file/user-images/{filename:.+}")
+    public ResponseEntity<Resource> loadImage(@PathVariable String filename) {
+        try {
+            // Load image from service
+            Resource resource = service.loadImage(filename);
+
+            // Get MIME type
+            String contentType = service.getMimeType(resource);
+
+            // Return image with proper headers
+            return ResponseEntity.ok()
+                    .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
+                    .body(resource);
+
+        } catch (Exception e) {
+            log.error("Image load error for filename {}: {}", filename, e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 }

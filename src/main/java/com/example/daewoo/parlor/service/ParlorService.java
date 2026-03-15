@@ -49,7 +49,8 @@ public class ParlorService {
         PaymentAccommodationDto comDto = PaymentAccommodationDto.fromEntity(
                 accRoomTypeEntity.getAccommodation(),
                 price,
-                mainImage
+                mainImage,
+                accId  // 실제 AccRoomType의 accId 전달
         );
 
         return PaymentAccRoomTypeDto.fromEntity(accRoomTypeEntity, comDto);

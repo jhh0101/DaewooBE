@@ -17,6 +17,7 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
     @Query("SELECT new com.example.daewoo.reservation.dto.ReservationDto(" +
             "    r.reservationId," +
             "    r.parlorEntity.parContent, " +
+            "    r.parlorEntity.accRoomTypeEntity.accommodation.comTitle, " +
             "    r.parlorEntity.accRoomTypeEntity.accId, " +
             "    r.userEntity.userId," +
             "    r.parlorEntity.accRoomTypeEntity.accommodation.checkInTime," +
@@ -28,8 +29,7 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
             "ORDER BY r.reservationId DESC") // 필요에 따라 정렬 조건 추가
     List<ReservationDto> findAllReservationsByUserIdWithCheckInOut(@Param("userId") Long userId);
 
-    boolean existsByParlorEntityParIdAndCheckInEqualsAndCheckOutEquals(Long parId, LocalDate checkIn, LocalDate checkOut);
+//    boolean existsByParlorEntityParIdAndCheckInEqualsAndCheckOutEquals(Long parId, LocalDate checkIn, LocalDate checkOut);
 
     boolean existsByParlorEntityParIdAndCheckOutGreaterThanEqualAndCheckInLessThanEqual(Long parId, LocalDate checkIn, LocalDate checkOut);
-
 }

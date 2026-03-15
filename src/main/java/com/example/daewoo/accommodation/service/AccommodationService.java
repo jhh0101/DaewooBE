@@ -130,41 +130,57 @@ public class AccommodationService {
 
         AccommodationOneDto dto = AccommodationOneDto.fromEntity(accommodation);
 
+        // ----------------------------------------------------
+        // [✅ 1단계: 사용할 객실 목록 초기화]
+        // 기본적으로 전체 객실 목록을 사용합니다.
+        List<AccRoomTypeDto> roomsToProcess = dto.getRooms();
+
+        // ----------------------------------------------------
+        // [✅ 2단계: 체크인/체크아웃 정보가 있으면 잔여 객실로 갱신]
+        if (checkIn != null && checkOut != null) {
+            // DB에서 잔여 객실만 조회
+            List<AccRoomTypeEntity> availableEntities = accRoomTypeRepository.findAvailableRoomEntities(comId, checkIn, checkOut);
+
+            // 잔여 객실 DTO를 새로 생성
+            roomsToProcess = availableEntities.stream()
+                    .map(AccRoomTypeDto::fromEntity)
+                    .collect(Collectors.toList());
+
+            // **필터링된 객실 목록으로 DTO의 rooms 필드를 즉시 갱신합니다.**
+            dto.setRooms(roomsToProcess);
+        }
+
+        // ----------------------------------------------------
+        // [✅ 3단계: 현재 (필터링된) 객실 목록에 할인 가격 적용]
         BigDecimal discountRate = accommodation.getDiscountRate();
 
         if (discountRate != null && discountRate.compareTo(BigDecimal.ZERO) > 0) {
-
-            // 100을 BigDecimal 타입으로 미리 만들어 둠
             BigDecimal oneHundred = new BigDecimal("100");
 
-            for (AccRoomTypeDto roomDto : dto.getRooms()) {
+            // roomsToProcess (잔여 객실 목록이거나 전체 객실 목록) 에 할인을 적용
+            for (AccRoomTypeDto roomDto : roomsToProcess) {
                 int originalPrice = roomDto.getPrice();
 
-                // --- BigDecimal 계산 ---
-                // 1. 원가를 BigDecimal로 변환
+                // 할인 계산 로직은 기존과 동일
                 BigDecimal priceBD = new BigDecimal(originalPrice);
-
-                // 2. 할인율 계산: 1 - (할인율 / 100)
                 BigDecimal discountFactor = BigDecimal.ONE.subtract(discountRate.divide(oneHundred));
-
-                // 3. 할인가 계산: 원가 * 할인율
                 BigDecimal discountedPriceBD = priceBD.multiply(discountFactor);
 
-                // DTO에 Integer 타입으로 변환하여 저장
                 roomDto.setDiscountedPrice(discountedPriceBD.intValue());
                 roomDto.setDiscountRate(discountRate);
             }
         }
 
-        if (checkIn != null && checkOut != null) {
-            List<AccRoomTypeEntity> availableEntities = accRoomTypeRepository.findAvailableRoomEntities(comId, checkIn, checkOut);
+        // ----------------------------------------------------
+        // [❌ 기존의 중복 로직 제거: 덮어쓰는 부분 제거]
+    /*
+    if (checkIn != null && checkOut != null) {
+        // ... (기존 잔여 객실 조회 및 DTO 생성 로직) ...
+        dto.setRooms(availableDtos); // <--- 이 부분이 문제였습니다.
+    }
+    */
+        // ----------------------------------------------------
 
-            List<AccRoomTypeDto> availableDtos = availableEntities.stream()
-                    .map(AccRoomTypeDto::fromEntity)
-                    .collect(Collectors.toList());
-
-            dto.setRooms(availableDtos);
-        }
         dto.setPrice(price);
         dto.setMainImage(mainImage);
         dto.setSubImage(subImage);

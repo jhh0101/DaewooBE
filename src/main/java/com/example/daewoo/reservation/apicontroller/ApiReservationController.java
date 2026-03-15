@@ -3,6 +3,7 @@ package com.example.daewoo.reservation.apicontroller;
 import com.example.daewoo.common.CommonRestController;
 import com.example.daewoo.common.ResponseCode;
 import com.example.daewoo.common.ResponseDto;
+import com.example.daewoo.common.toss.dto.TossPaymentDto;
 import com.example.daewoo.reservation.dto.ReservationDto;
 import com.example.daewoo.reservation.dto.ReservationEntity;
 import com.example.daewoo.reservation.service.ReservationService;
@@ -26,19 +27,19 @@ public class ApiReservationController extends CommonRestController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public ResponseEntity<ResponseDto> insert(@RequestBody ReservationDto dto,
-                                              Authentication authentication) {
-        try{
-            Long userId = userService.findByEmail(authentication.getName()).getUserId();
-            dto.setUserId(userId);
-            this.reservationService.insert(userId ,dto);
-            return getResponseEntity(ResponseCode.SUCCESS, "Insert Ok", dto, null);
-        }catch (Throwable e){
-            log.error(e.toString());
-            return getResponseEntity(ResponseCode.INSERT_FAIL, "Insert Error", null, e);
-        }
-    }
+//    @PostMapping
+//    public ResponseEntity<ResponseDto> insert(@RequestBody ReservationDto dto,
+//                                              Authentication authentication) {
+//        try{
+//            Long userId = userService.findByEmail(authentication.getName()).getUserId();
+//            dto.setUserId(userId);
+//            this.reservationService.insert(userId ,dto);
+//            return getResponseEntity(ResponseCode.SUCCESS, "Insert Ok", dto, null);
+//        }catch (Throwable e){
+//            log.error(e.toString());
+//            return getResponseEntity(ResponseCode.INSERT_FAIL, "Insert Error", null, e);
+//        }
+//    }
 
     @GetMapping("")
     public ResponseEntity<ResponseDto> select(Authentication authentication) {
@@ -53,7 +54,7 @@ public class ApiReservationController extends CommonRestController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ResponseDto> update(@RequestBody ReservationDto dto,@PathVariable Long id,
+    public ResponseEntity<ResponseDto> update(@RequestBody TossPaymentDto dto, @PathVariable Long id,
                                               Authentication authentication){
         try{
             dto.setReservationId(id);

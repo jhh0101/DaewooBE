@@ -6,6 +6,8 @@ import com.example.daewoo.user.dto.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -303,5 +308,56 @@ public class UserService {
 
         log.info("Image uploaded successfully: {}", webPath);
         return webPath;
+    }
+
+    public Resource loadImage(String filename) {
+        try {
+            // 상대 경로 처리
+            String uploadPath = userImagePath;
+            Path filePath;
+            
+            if (uploadPath.startsWith("./") || uploadPath.startsWith(".\\")) {
+                String projectRoot = System.getProperty("user.dir");
+                String relativePath = uploadPath.substring(2);
+                filePath = Paths.get(projectRoot, relativePath, filename).normalize();
+            } else {
+                filePath = Paths.get(uploadPath).resolve(filename).normalize();
+            }
+            
+            log.info("Loading image from: {}", filePath.toString());
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            } else {
+                log.error("File not found or not readable: {}", filePath);
+                throw new RuntimeException("파일을 찾을 수 없거나 읽을 수 없습니다: " + filename);
+            }
+        } catch (Exception e) {
+            log.error("Image load error: {}", e.getMessage());
+            throw new RuntimeException("이미지 로드 중 오류가 발생했습니다: " + filename, e);
+        }
+    }
+
+    public String getMimeType(Resource resource) throws IOException {
+        try {
+            String contentType = Files.probeContentType(resource.getFile().toPath());
+            return contentType != null ? contentType : "application/octet-stream";
+        } catch (Exception e) {
+            // 파일명에서 확장자로 MIME 타입 추론
+            String filename = resource.getFilename();
+            if (filename != null) {
+                if (filename.endsWith(".jpg") || filename.endsWith(".jpeg")) {
+                    return "image/jpeg";
+                } else if (filename.endsWith(".png")) {
+                    return "image/png";
+                } else if (filename.endsWith(".gif")) {
+                    return "image/gif";
+                } else if (filename.endsWith(".webp")) {
+                    return "image/webp";
+                }
+            }
+            return "application/octet-stream";
+        }
     }
 }
